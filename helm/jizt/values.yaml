@@ -36,7 +36,7 @@ dispatcher:
   ports:
     svc: 5000
     container: 5000
-  image: gcr.io/jizt-308512/jizt/dispatcher:0.1.4
+  image: gcr.io/jizt-308512/jizt/dispatcher:0.1.5rc1
   requests:
     memory: 32Mi
     cpu: 20m
@@ -50,7 +50,7 @@ postgres:
   host: "db-cluster.jizt-db"  # clusterName.namespace
   dbName: "jizt"
   secret:
-    secretName: pg-dispatcher
+    secretName: pg-dispatcher-summarization
     volumeName: postgres-user
     mountPath: "/etc/postgres"
     usernameFile: "username"
