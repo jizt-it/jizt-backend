@@ -21,69 +21,59 @@ __version__ = '0.1.11'
 
 from datetime import datetime
 from marshmallow import Schema, fields, pre_dump, pre_load, EXCLUDE, INCLUDE
-from summary_status import SummaryStatus
+from extracted_text_status import ExtractedTextStatus
 from supported_models import SupportedModel
 from supported_languages import SupportedLanguage
 from warning_messages import WarningMessage
+from typing import Tuple
 
 
-class Summary():
-    """Summary class.
+class ExtractedText():
+    """Class for the extracted text.
 
-    A summary has the following attributes:
+    An extracted text has the following attributes:
 
-    * id_ (:obj:`str`): the id of the summary.
-    * source (:obj:`str`): the source to process, e.g., a plain text
-      to be summarized.
-    * output (:obj:`str`): the output once the source has been
-      processed, e.g., a summary.
-    * model (:obj:`data.supported_models.SupportedModel`): the
-      model with wich the summary was generated.
-    * params (:obj:`dict`): the parameters with which the summary was
-      generated.
-    * status (:obj:`data.summary_status.SummaryStatus`):
-      the current status of the summary.
-    * started_at (:obj:`datetime.datetime`): the time when the summary
-      was first requested.
-    * ended_at (:obj:`datetime.datetime`): the time when the summary
-      first finished.
-    * language (:obj:data.supported_languages.SupportedLanguage):
-      the language of the summary.
+    * id_ (:obj:`str`): the id of the extracted text (hash of the document from which
+      it was extracted).
+    * output (:obj:`str`): the extracted text.
+    * pages (:obj:`Tuple[int]`): the document pages from which the text was extracted.
+      The tuple must contain two numbers, i.e., start and end page. If the text
+      is extracted from a single page, the two numbers will be the same, e.g.,
+      ``(10, 10)`` means the text from the page 10.
+    * status (:obj:`data.extracted_text_status.ExtractedTextStatus`):
+      the current status of the extracted text.
+    * started_at (:obj:`datetime.datetime`): the time when it was first
+      requested to extract the text.
+    * ended_at (:obj:`datetime.datetime`): the time when the text was finished to be
+      extracted.
     """
 
     def __init__(self,
                  id_: str,
-                 source: str,
                  output: str,
-                 model: SupportedModel,
-                 params: dict,
-                 status: SummaryStatus,
+                 pages: Tuple[int],
+                 status: ExtractedTextStatus,
                  started_at: datetime,
                  ended_at: datetime,
-                 language: SupportedLanguage
     ):  # 2020 be like
         self.id_ = id_
-        self.source = source
         self.output = output
-        self.model = model.value
-        self.params = params
+        self.pages = pages
         self.status = status.value
         self.started_at = started_at
         self.ended_at = ended_at
-        self.language = language.value
 
     def __str__(self):
-        return (f'SUMMARY [id]: {self.id_}, [source]: "{self.source}", '
-                f'[output]: "{self.output}", [model]: {self.model}, '
-                f'[params]: {self.params}, [status]: {self.status}, '
-                f'[started_at]: {self.started_at}, [ended_at]: {self.ended_at}, '
-                f'[language]: {self.language}')
+        return (f'EXTRACTED TEXT [id]: {self.id_}, [source]: "{self.source}", '
+                f'[output]: "{self.output}", [pages]: {self.pages}, '
+                f'[status]: {self.status}, [started_at]: {self.started_at}, '
+                f'[ended_at]: {self.ended_at}')
 
     def __repr__(self):
-        return (f'Summary({self.id_}, {self.source}, {self.output}, '
-                f'{self.model}, {self.params}, {self.status}, {self.started_at}, '
-                f'{self.ended_at}, {self.language}')
+        return (f'ExtractedText({self.id_}, {self.source}, ' {self.pages}, '
+                f'{self.status}, {self.started_at}, {self.ended_at}')
 
+# TODO: from here on
 
 class PlainTextRequestSchema(Schema):
     """Schema for the clients' plain-text REST requests.
