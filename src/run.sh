@@ -1,1 +1,1 @@
-uvicorn jizt.main:app
+uvicorn jizt.main:app --reload

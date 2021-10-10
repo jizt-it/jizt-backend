@@ -15,36 +15,14 @@
 #
 # For license information on the libraries used, see LICENSE.
 
-"""API Routes."""
+"""Current supported languages."""
 
 __version__ = '0.1.0'
 
-from fastapi import APIRouter
-from fastapi.responses import HTMLResponse
-from .summaries.views import router as summaries_router
-
-# v1 routes
-api_router_v1 = APIRouter()
-
-api_router_v1.include_router(summaries_router, prefix="/summaries", tags=["summaries"])
-
-# root routes
-api_router_root = APIRouter()
+from enum import Enum
 
 
-@api_router_root.get("/", status_code=200, response_class=HTMLResponse)
-def root_view():
-    return """
-    <!DOCTYPE html>
-    <html>
-        <body>
-            <h1>Jizt API v0.0.1</h1>
-            <p>Visit the docs at: <a href="https://docs.api.jizt.it">docs.api.jizt.it</a>.</p>
-        </body>
-    </html>
-    """
+class SupportedLanguage(Enum):
+    """Supported languages."""
 
-
-@api_router_root.get("/healthz", status_code=200)
-def healthcheck():
-    return {"status": "alive"}
+    ENGLISH = "en"

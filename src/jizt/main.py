@@ -24,8 +24,9 @@ __version__ = '0.1.2'
 
 import logging
 from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 from jizt.api import api_router_root, api_router_v1
 from jizt.logging import configure_logging
@@ -33,7 +34,19 @@ from jizt.logging import configure_logging
 log = logging.getLogger(__name__)
 configure_logging()
 
-app = Starlette()
+# Set up CORS
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        # Origins examples: http://jizt.it, https://app.jizt.it, http://jizt.it/hi
+        allow_origins=r"https?://\w*\.?jizt\.it/?.*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=['Content-Type']
+    )
+]
+
+app = Starlette(middleware=middleware)
 api_root = FastAPI(title="Jizt REST API")
 api_v1 = FastAPI(
     title="Jizt REST API",
@@ -41,17 +54,7 @@ api_v1 = FastAPI(
     # Disable docs
     docs_url=None,
     redoc_url=None,
-    openapi_url=None
-)
-
-# Set up CORS
-app.add_middleware(
-    CORSMiddleware,
-    # Origins examples: http://jizt.it, https://app.jizt.it, http://jizt.it/hi
-    allow_origins=r"https?://\w*\.?jizt\.it/?.*",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=['Content-Type'],
+    openapi_url=None,
 )
 
 # Include routes
@@ -60,5 +63,5 @@ api_v1.include_router(api_router_v1)
 
 # Mount API routes
 # Order matters! More specific routes must come first.
-app.mount("/api/v1", app=api_v1)
+app.mount("/v1", app=api_v1)
 app.mount("/", app=api_root)
