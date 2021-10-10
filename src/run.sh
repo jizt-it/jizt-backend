@@ -1,0 +1,1 @@
+uvicorn jizt.main:app
