@@ -25,4 +25,4 @@ from enum import Enum
 class SupportedModel(Enum):
     """Supported models."""
 
-    T5_LARGE = "t5-large"
+    T5 = "t5"

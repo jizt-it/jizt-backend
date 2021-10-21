@@ -97,7 +97,7 @@ class PlainTextRequestSchema(BaseModel):
         source (:obj:`str`):
             The text in plain format to be summarized.
         model (:obj:`utils.supported_models.SupportedModel`, `optional`,
-               defaults to :obj:`utils.supported_models.SupportedModel.T5_LARGE`):
+               defaults to :obj:`utils.supported_models.SupportedModel.T5`):
             The model used to generate the summary.
         params (:obj:`dict`, `optional`, defaults to :obj:`{}`):
             The params used in the summary generation.
@@ -110,7 +110,7 @@ class PlainTextRequestSchema(BaseModel):
     """
 
     source: str
-    model: Optional[SupportedModel] = SupportedModel.T5_LARGE
+    model: Optional[SupportedModel] = SupportedModel.T5
     params: Optional[Dict[str, Any]] = {}
     language: Optional[SupportedLanguage] = SupportedLanguage.ENGLISH
     cache: Optional[bool]
