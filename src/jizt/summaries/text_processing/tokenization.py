@@ -55,16 +55,16 @@ def sentence_tokenize(
             afterwards split once again by the :mod:`blingfire`
             :func:`text_to_sentences` function).
     """
-    # punctuation that shouldn't be preceeded by a whitespace
+    # Punctuation that shouldn't be preceeded by a whitespace
     PUNCT_NO_PREV_WHITESPACE = ".,;:!?"
 
-    # Check if text is empty or contains onlynon-printable
-    # characters, e.g., whitespaces.
+    # Check if text is empty or contains only non-printable
+    # characters, e.g., whitespaces
     if len(text.strip()) == 0:
         return []
 
     if tokenizer is None:
-        # if next letter after period is lowercase, consider it part of the same
+        # If next letter after period is lowercase, consider it part of the same
         # sentence. E.g.: "As we can see in Figure 1.1. the sentence will not be
         # split." Also, take acronyms as groups, e.g., U.K., U.S., B.C., D.C.,
         # etc.
@@ -72,16 +72,16 @@ def sentence_tokenize(
 
         text = ' '.join(text.split())  # remove '\n', '\t', etc.
 
-    # if there's no final period, add it (this makes the assumption that the
+    # If there's no final period, add it (this makes the assumption that the
     # last sentence is not interrogative or exclamative, i.e., ends with '?' or
     # '!')
     if text[-1] not in ('.', '?', '!'):
         text += '.'
 
-    # split sentences with the regexp and ensure there's 1 whitespace at most
+    # Split sentences with the regexp and ensure there's 1 whitespace at most
     sentences = ' '.join(tokenizer.tokenize(text)).replace('  ', ' ')
 
-    # remove whitespaces before PUNCT_WITHOUT_PREV_WHITESPACE
+    # Remove whitespaces before PUNCT_WITHOUT_PREV_WHITESPACE
     for punct in PUNCT_NO_PREV_WHITESPACE:
         sentences = sentences.replace(' ' + punct, punct)
 
@@ -90,11 +90,11 @@ def sentence_tokenize(
     final_sentences = [sentences[0]]
 
     for sent in sentences[1:]:
-        # if the previous sentence doesn't end with a '.', '!' or '?'
+        # If the previous sentence doesn't end with a '.', '!' or '?',
         # we concatenate the current sentence to it
         if final_sentences[-1][-1] not in ('.', '!', '?'):
             final_sentences[-1] += (' ' + sent)
-        # if the next sentence doesn't start with a letter or a number,
+        # If the next sentence doesn't start with a letter or a number,
         # we concatenate it to the previous
         elif not sent[0].isalpha() and not sent[0].isdigit():
             final_sentences[-1] += sent

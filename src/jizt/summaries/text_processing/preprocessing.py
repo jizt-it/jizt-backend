@@ -19,6 +19,7 @@
 
 __version__ = '0.1.0'
 
+import logging
 from .tokenization import sentence_tokenize
 from typing import List, Union
 
@@ -44,6 +45,14 @@ class TextPreprocessor:
         are split into: :code:`['Hello.', 'Goodbye.']` and
         :code:`['Seriously??!', 'That can't be true.']`, respectively.
     """
+
+    def __init__(self):
+        logging.basicConfig(
+            format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
+            level=logging.DEBUG,
+            datefmt='%d/%m/%Y %I:%M:%S %p'
+        )
+        self.logger = logging.getLogger("TextPreprocessor")
 
     @classmethod
     def preprocess(
