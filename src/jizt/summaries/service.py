@@ -20,66 +20,94 @@
 
 __version__ = '0.1.0'
 
+import logging
 from datetime import datetime
-from .schemas import Summary
-from .utils.supported_models import SupportedModel
+from fastapi import BackgroundTasks
+from .pipeline.pipeline import SummarizationPipeline
+from .data.summary_dao_singleton import SummaryDAOSingleton
+from .models import PlainTextRequestSchema, Summary
 from .utils.supported_languages import SupportedLanguage
 from .utils.summary_status import SummaryStatus
+from .utils.id_generation import generate_request_id, generate_summary_id
+from jizt.config import LOG_LEVEL
 from typing import Dict, Any
 
-# TODO: Implement
-MOCK_SUMMARY = Summary(
-    id_="12345",
-    source="The source.",
-    output="The output.",
-    model=SupportedModel.T5,
-    params={},
-    status=SummaryStatus.PREPROCESSING,
-    started_at=datetime.now(),
-    ended_at=None,
-    language=SupportedLanguage.ENGLISH
+logging.basicConfig(
+    format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
+    level=LOG_LEVEL,
+    datefmt='%d/%m/%Y %I:%M:%S %p'
 )
-
-# TODO: Implement
-MOCK_WARNINGS = {
-    "warnings": {
-        "top_k": ["example warning"]
-    }
-}
-
+logger = logging.getLogger("SummaryService")
+db = SummaryDAOSingleton()
+summarization_pipeline = SummarizationPipeline()
 
 
 def generate_summary(
-    source: str,
-    model: str,
-    params: dict,
-    language: str,
-    cache: dict
+    request: PlainTextRequestSchema,
+    background_tasks: BackgroundTasks
 ) -> Dict[Summary, Dict[str, Any]]:
     """Generate summary.
 
-    For info on the params, see :class:`schemas.PlainTextRequestSchema`.
+    For info on the params, see :class:`models.PlainTextRequestSchema`.
 
     Returns:
         :obj:`Dict[Summary, Dict[str, Any]]`: a dictionary containing the
         summary and the warnings derived from the summary generation
         (:obj:`None` if there are no warnings).
     """
-    MOCK_WARNINGS.update(
-        {"source": source,
-        "model": model,
-        "params": params,
-        "language": language,
-        "cache": cache}
-    )
-    return MOCK_SUMMARY, MOCK_WARNINGS
+    source, model, params, language, cache = request.dict().values()
+
+    request_id = generate_request_id(source, model, params)
+    summary_id = generate_summary_id(source, model, params)
+    logger.debug(db.REQUEST_TABLE)
+    if db.request_exists(request_id):
+        summary, warnings = db.get_summary_by_request_id(request_id)
+        count = db.increment_summary_count(request_id)
+        logger.debug(
+            f'Summary already exists: [id] {summary.id_}, [source] '
+            f'{summary.source[:50]}, [output] '
+            f'{summary.output[:50] if summary.output is not None else None}, '
+            f'[model] {summary.model}, [params] {summary.params}, [status] '
+            f'{summary.status}, [started_at] {summary.started_at}, [ended_at] '
+            f'{summary.ended_at}, [language] {summary.language}'
+        )
+        logger.debug(f"Current summary count: {count}.")
+    else:
+        summary = Summary(
+            id_=summary_id,
+            source=source,
+            output=None,
+            model=model,
+            params=params,
+            status=SummaryStatus.PREPROCESSING,
+            started_at=datetime.now(),
+            ended_at=None,
+            language=SupportedLanguage(language)
+        )
+        # TODO: warnings = data.pop('warnings', None)
+        warnings = None
+        db.insert_initial_request(request_id, summary, cache, warnings)
+        logger.debug(
+            f'New summary created: [id] {summary.id_}, [source] '
+            f'{summary.source[:50]}, [output] '
+            f'{summary.output[:50] if summary.output is not None else None}, '
+            f'[model] {summary.model}, [params] {summary.params}, [status] '
+            f'{summary.status}, [started_at] {summary.started_at}, [ended_at] '
+            f'{summary.ended_at}, [language] {summary.language}'
+        )
+        background_tasks.add_task(
+            summarization_pipeline.run,
+            request_id,
+            summary
+        )
+    return summary, warnings
 
 
-def get_summary(summary_id: str) -> Dict[Summary, Dict[str, Any]]:
+def get_summary(request_id: str) -> Dict[Summary, Dict[str, Any]]:
     """Get a generated summary.
 
     Args:
-        summary_id (:obj:`str`):
+        request_id (:obj:`str`):
             The id of the requested summary.
 
     Returns:
@@ -87,4 +115,5 @@ def get_summary(summary_id: str) -> Dict[Summary, Dict[str, Any]]:
         summary and the warnings derived from the summary generation
         (:obj:`None` if there are no warnings).
     """
-    return MOCK_SUMMARY, MOCK_WARNINGS
+    # return db.get_summary_by_request_id(request_id)  # TODO
+    return db.get_summary_by_summary_id(request_id)

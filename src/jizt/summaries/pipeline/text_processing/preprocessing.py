@@ -21,6 +21,7 @@ __version__ = '0.1.0'
 
 import logging
 from .tokenization import sentence_tokenize
+from jizt.config import LOG_LEVEL
 from typing import List, Union
 
 
@@ -46,10 +47,10 @@ class TextPreprocessor:
         :code:`['Seriously??!', 'That can't be true.']`, respectively.
     """
 
-    def __init__(self):
+    def __init__(self, log_level: int = LOG_LEVEL):
         logging.basicConfig(
             format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
-            level=logging.DEBUG,
+            level=log_level,
             datefmt='%d/%m/%Y %I:%M:%S %p'
         )
         self.logger = logging.getLogger("TextPreprocessor")

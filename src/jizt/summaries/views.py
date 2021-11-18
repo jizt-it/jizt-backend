@@ -20,15 +20,20 @@
 
 __version__ = '0.1.0'
 
-from fastapi import APIRouter
-from .schemas import PlainTextRequestSchema, ResponseSchema
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends, status
+from .models import PlainTextRequestSchema, ResponseSchema, Summary
 from .service import generate_summary, get_summary
 
 router = APIRouter()
 
 
-@router.post("/plain-text", response_model=ResponseSchema)
-def request_summary_view(request: PlainTextRequestSchema):
+@router.post("/plain-text", response_model=ResponseSchema,
+             status_code=status.HTTP_202_ACCEPTED)
+async def request_summary_view(
+    request: PlainTextRequestSchema,
+    background_tasks: BackgroundTasks,
+    result: tuple[Summary, dict] = Depends(generate_summary)  # TODO: model for warnings
+) -> ResponseSchema:
     """Request a summary of a text.
 
     When a client first makes a POST request, a response is given with the
@@ -37,24 +42,25 @@ def request_summary_view(request: PlainTextRequestSchema):
     completed, the GET request will contain the output text, e.g., the summary.
 
     Returns:
-        :obj:`schemas.ResponseSchema`: A 202 Accepted response with a JSON body
+        :obj:`models.ResponseSchema`: A 202 Accepted response with a JSON body
         containing the summary id, e.g.,
         ``{'summary_id': '73c3de4175449987ef6047f6e0bea91c1036a8599b'}``.
 
     Raises: :class:`http.client.HTTPException`:
-        If the request body JSON is not valid. 
+        If the request body JSON is not valid.
     """
-    summary, warnings = generate_summary(**request.dict())
+
+    summary, warnings = result
     response = summary.dict
     # Match response attribues
-    if "id_" in response:
-        response["summary_id"] = response.pop("id_")
-    response.update(warnings)
+    response["summary_id"] = response.pop("id_")
+    # response.update(warnings)  # TODO
+    response["warnings"] = {}  # TODO: delete
     return response
 
 
 @router.get("/plain-text/{summary_id}", response_model=ResponseSchema)
-def get_summary_view(summary_id: str):
+async def get_summary_view(summary_id: str):
     """Get a generated summary.
 
     The summary status should be checked until the generation of the summary
@@ -65,18 +71,22 @@ def get_summary_view(summary_id: str):
             The id of the requested summary.
 
     Returns:
-        :obj:`schemas.ResponseSchema`: A ``200 OK`` response with a JSON body
+        :obj:`models.ResponseSchema`: A ``200 OK`` response with a JSON body
         containing the summary. For info on the summary fields, see
-        :class:`schemas.ResponseSchema`.
+        :class:`models.ResponseSchema`.
 
     Raises:
         :class:`http.client.HTTPException`: If there exists no summary with the
         specified id.
     """
     summary, warnings = get_summary(summary_id)
+    if summary is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Summary '{summary_id}' not found.")
     response = summary.dict
     # Match response attribues
     if "id_" in response:
         response["summary_id"] = response.pop("id_")
-    response.update(warnings)
+    # response.update(warnings)  # TODO
+    response["warnings"] = {}  # TODO: delete
     return response

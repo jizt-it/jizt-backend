@@ -23,6 +23,7 @@ import math
 import logging
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+from jizt.config import LOG_LEVEL, TOKENIZER_PATH, MODEL_PATH
 from typing import List, Optional, Union, Iterable
 
 
@@ -41,12 +42,17 @@ class Summarizer:
     <https://huggingface.co/transformers/model_doc/t5.html#transformers.T5ForConditionalGeneration>`__:
     """
 
-    def __init__(self, tokenizer_path: str, model_path: str):
+    def __init__(
+        self,
+        tokenizer_path: str = TOKENIZER_PATH,
+        model_path: str = MODEL_PATH,
+        log_level: int = LOG_LEVEL
+    ):
         self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
         self._model = T5ForConditionalGeneration.from_pretrained(model_path)
         logging.basicConfig(
             format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
-            level=logging.DEBUG,
+            level=log_level,
             datefmt='%d/%m/%Y %I:%M:%S %p'
         )
         self.logger = logging.getLogger("Summarizer")
@@ -64,7 +70,7 @@ class Summarizer:
         input_ids: List[Union[List[int], torch.LongTensor]],
         relative_max_length: Optional[float] = 0.4,
         relative_min_length: Optional[float] = 0.1,
-        do_sample: Optional[bool] = None,
+        do_sample: Optional[bool] = True,
         early_stopping: Optional[bool] = None,
         num_beams: Optional[int] = 4,
         temperature: Optional[float] = None,
@@ -73,7 +79,7 @@ class Summarizer:
         repetition_penalty: Optional[float] = None,
         bad_words_ids: Optional[Iterable[int]] = None,
         length_penalty: Optional[float] = None,
-        no_repeat_ngram_size: Optional[int] = 3,
+        no_repeat_ngram_size: Optional[int] = 4,
         num_return_sequences: Optional[int] = None,
         use_cache: Optional[bool] = None,
         skip_special_tokens: Optional[bool] = True,
@@ -95,13 +101,13 @@ class Summarizer:
             input_ids (:obj:`List[List[int]]` or :obj:`List[torch.LongTensor]`):
                 The sequence subdivisions used as a prompt for the summary
                 generation.
-            relative_max_length (:obj:`float`, `optional`, defaults to 0.7):
+            relative_max_length (:obj:`float`, `optional`, defaults to 0.4):
                 The maximum length of the sequence to be generated, relative to
                 the total length of the input ids.
-            relative_min_length (:obj:`float`, `optional`, defaults to 0.3):
+            relative_min_length (:obj:`float`, `optional`, defaults to 0.1):
                 The minimum length of the sequence to be generated, relative to
                 the total length of the input ids.
-            do_sample (:obj:`bool`, `optional`, defaults to :obj:`False`):
+            do_sample (:obj:`bool`, `optional`, defaults to :obj:`True`):
                 Whether or not to use sampling; use greedy decoding otherwise.
             early_stopping (:obj:`bool`, `optional`, defaults to :obj:`False`):
                 Whether to stop the beam search when at least ``num_beams``
@@ -131,7 +137,7 @@ class Summarizer:
                 values < 1.0 in order to encourage the model to generate shorter
                 sequences, to a value > 1.0 in order to encourage the model to
                 produce longer sequences.
-            no_repeat_ngram_size (:obj:`int`, `optional`, defaults to 3):
+            no_repeat_ngram_size (:obj:`int`, `optional`, defaults to 4):
                 If set to int > 0, all ngrams of that size can only occur once.
             num_return_sequences(:obj:`int`, `optional`, defaults to 1):
                 The number of independently computed returned sequences for each

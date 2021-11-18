@@ -21,8 +21,9 @@ __version__ = '0.0.4'
 
 import logging
 import torch
-from text_processing.tokenization import sentence_tokenize
 from transformers import T5Tokenizer, tokenization_utils_base
+from ..text_processing.tokenization import sentence_tokenize
+from jizt.config import LOG_LEVEL, TOKENIZER_PATH
 from typing import List, Tuple, Optional, Union
 
 
@@ -44,11 +45,21 @@ class SplitterEncoder:
     for further information on tokenization.
     """
 
-    def __init__(self, tokenizer_path: str, debug: bool = False):
+    def __init__(
+        self,
+        tokenizer_path: str = TOKENIZER_PATH,
+        log_level: int = LOG_LEVEL
+    ):
         self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
-        if not debug:
-            # deactivate warnings from the tokenizer
+        if LOG_LEVEL != logging.DEBUG:
+            # Deactivate warnings from the tokenizer
             logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
+        logging.basicConfig(
+            format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
+            level=log_level,
+            datefmt='%d/%m/%Y %I:%M:%S %p'
+        )
+        self.logger = logging.getLogger("Encoder")
 
     @property
     def tokenizer(self):

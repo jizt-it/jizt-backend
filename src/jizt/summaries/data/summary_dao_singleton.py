@@ -15,19 +15,29 @@
 #
 # For license information on the libraries used, see LICENSE.
 
-"""API Configuration."""
+
+"""Singleton providing a Data Access Object (DAO) for summaries."""
 
 __version__ = '0.1.0'
 
 import logging
-from starlette.config import Config
-from pathlib import Path
+# from .summary_dao_postgresql import SummaryDAOPostgresql
+from .summary_dao_mock import SummaryDAOMock
 
-log = logging.getLogger(__name__)
-config = Config("jizt/.env")
+class SummaryDAOSingleton:
+    """Summary DAO Singleton."""
 
-LOG_LEVEL: str = config("LOG_LEVEL", default=logging.DEBUG)
-ENV: str = config("ENV", default="local")
+    _instance = None
 
-TOKENIZER_PATH: Path = config("TOKENIZER_PATH", cast=Path, default="t5-base")
-MODEL_PATH: Path = config("MODEL_PATH", cast=Path, default="t5-base")
+    def __new__(cls, log_level: int = logging.ERROR) -> SummaryDAOMock:
+        """Singleton.
+        Args:
+            log_level (:obj:`int`, `optional`, defaults to `logging.ERROR`):
+                The log level.
+        Returns:
+            :obj:`SummaryDAOPostgresql`: The single instance of the DAO.
+        """
+
+        if cls._instance is None:
+            cls._instance = SummaryDAOMock(log_level)
+        return cls._instance
