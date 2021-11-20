@@ -20,6 +20,7 @@
 
 __version__ = '0.1.0'
 
+import copy
 import logging
 from datetime import datetime
 from fastapi import BackgroundTasks
@@ -59,7 +60,6 @@ def generate_summary(
 
     request_id = generate_request_id(source, model, params)
     summary_id = generate_summary_id(source, model, params)
-    logger.debug(db.REQUEST_TABLE)
     if db.request_exists(request_id):
         summary, warnings = db.get_summary_by_request_id(request_id)
         count = db.increment_summary_count(request_id)
@@ -100,6 +100,8 @@ def generate_summary(
             request_id,
             summary
         )
+    summary = copy.copy(summary)  # TODO: remove (for now we store the summaries in memory)
+    summary.id_ = request_id  # we return the request id
     return summary, warnings
 
 
@@ -115,5 +117,4 @@ def get_summary(request_id: str) -> Dict[Summary, Dict[str, Any]]:
         summary and the warnings derived from the summary generation
         (:obj:`None` if there are no warnings).
     """
-    # return db.get_summary_by_request_id(request_id)  # TODO
-    return db.get_summary_by_summary_id(request_id)
+    return db.get_summary_by_request_id(request_id)

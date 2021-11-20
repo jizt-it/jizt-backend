@@ -25,6 +25,7 @@ from .text_summarization.summarization import Summarizer
 from .text_processing.postprocessing import TextPostprocessor
 from ..data.summary_dao_singleton import SummaryDAOSingleton
 from ..models import Summary
+from ..utils.id_generation import generate_summary_id
 from ..utils.summary_status import SummaryStatus
 from jizt.config import LOG_LEVEL
 
@@ -54,6 +55,10 @@ class SummarizationPipeline:
     def run(self, request_id: str, summary: Summary):
         """#TODO: document."""
         preprocessed_text = self.text_preprocessor.preprocess(summary.source)
+        new_summary_id = generate_summary_id(preprocessed_text, summary.model,
+                                             summary.params)
+        self.db.update_source(summary.source, preprocessed_text,
+                              summary.id_, new_summary_id)
         self.db.update_summary(request_id, status=SummaryStatus.ENCODING.value)
         encoded_text = self.encoder.encode(preprocessed_text)
         self.db.update_summary(request_id, status=SummaryStatus.SUMMARIZING.value)

@@ -72,8 +72,10 @@ class Summary():
         self.started_at = started_at
         self.ended_at = ended_at
         self.language = language.value
-        # Object as dict
-        self.dict = self.__dict__.copy()
+
+    def dict(self):
+        """Return summary object as :obj:`dict`."""
+        return self.__dict__
 
     def __str__(self):
         return (f'SUMMARY [id]: {self.id_}, [source]: "{self.source}", '

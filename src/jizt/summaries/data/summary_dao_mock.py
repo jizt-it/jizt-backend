@@ -146,9 +146,9 @@ class SummaryDAOMock(SummaryDAOInterface):
     ):
         """See base class."""
         self.REQUEST_TABLE[request_id] = RequestItem(summary.id_,
-                                                cache,
-                                                datetime.now(),
-                                                warnings)
+                                                     cache,
+                                                     datetime.now(),
+                                                     warnings)
         source_id = generate_source_id(summary.source)
         self.SUMMARY_TABLE[summary.id_] = SummaryItem(
             source_id,
@@ -196,4 +196,30 @@ class SummaryDAOMock(SummaryDAOInterface):
         new_summary_id: str
     ):
         """See base class."""
-        #TODO: Update source with preprocessed text
+        # Update summary_ids in requests table
+        update_request = {
+            request_id: RequestItem(new_summary_id, request.cache,
+                                    datetime.now(), request.warnings)
+            for request_id, request in self.REQUEST_TABLE.items()
+            if request.summary_id == old_summary_id
+        }
+        self.REQUEST_TABLE.update(update_request)
+        # Update summary_ids in summaries table
+        self.SUMMARY_TABLE[new_summary_id] = self.SUMMARY_TABLE.pop(old_summary_id)
+        # Update source_id in source table
+        old_source_id = self._get_unique_key(old_source)
+        new_source_id = self._get_unique_key(new_source)
+        self.SOURCE_TABLE[new_source_id] = self.SOURCE_TABLE.pop(old_source_id)
+
+    @classmethod
+    def _get_unique_key(cls, text: str) -> str:
+        """Get a unique key for a text. SHA-256 algorithm is used.
+
+        Args:
+            text (:obj:`str`):
+                The text to get the unique id from.
+
+        Returns:
+            :obj:`str`: The unique, SHA-256 ecrypted key.
+        """
+        return hashlib.sha256(text.encode()).hexdigest()

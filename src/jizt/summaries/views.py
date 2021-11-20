@@ -20,10 +20,18 @@
 
 __version__ = '0.1.0'
 
+import logging
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends, status
+from jizt.config import LOG_LEVEL
 from .models import PlainTextRequestSchema, ResponseSchema, Summary
 from .service import generate_summary, get_summary
 
+logging.basicConfig(
+    format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
+    level=LOG_LEVEL,
+    datefmt='%d/%m/%Y %I:%M:%S %p'
+)
+logger = logging.getLogger("SummaryViews")
 router = APIRouter()
 
 
@@ -51,7 +59,7 @@ async def request_summary_view(
     """
 
     summary, warnings = result
-    response = summary.dict
+    response = summary.dict().copy()
     # Match response attribues
     response["summary_id"] = response.pop("id_")
     # response.update(warnings)  # TODO
@@ -83,7 +91,7 @@ async def get_summary_view(summary_id: str):
     if summary is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Summary '{summary_id}' not found.")
-    response = summary.dict
+    response = summary.dict().copy()
     # Match response attribues
     if "id_" in response:
         response["summary_id"] = response.pop("id_")

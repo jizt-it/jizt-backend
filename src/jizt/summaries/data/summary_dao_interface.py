@@ -29,21 +29,21 @@ from typing import Tuple
 class SummaryDAOInterface(ABC):
     """DAO Interface for access to :obj:`Summary` objects."""
 
-    # @abstractmethod
-    # def get_summary_by_summary_id(
-    #     self,
-    #     summary_id: str
-    # ) -> Summary:
-    #     """Retrieve a summary from the database through its id.
+    @abstractmethod
+    def get_summary_by_summary_id(
+        self,
+        summary_id: str
+    ) -> Summary:
+        """Retrieve a summary from the database through its id.
 
-    #     Args:
-    #         summary_id (:obj:`str`):
-    #             The summary id.
+        Args:
+            summary_id (:obj:`str`):
+                The summary id.
 
-    #     Returns:
-    #         :obj:tuple(:obj:`Summary`): The summary that matches the specified
-    #         id or :obj:`None` if there is not any summary with that id.
-    #     """
+        Returns:
+            :obj:tuple(:obj:`Summary`): The summary that matches the specified
+            id or :obj:`None` if there is not any summary with that id.
+        """
 
     @abstractmethod
     def get_summary_by_request_id(
