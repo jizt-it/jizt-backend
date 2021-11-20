@@ -29,4 +29,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PATH="/opt/venv/bin:$PATH"
 
+RUN python3 -c 'import nltk; nltk.download("punkt")'
+
 CMD ["uvicorn", "jizt.main:app", "--workers", "2", "--host", "0.0.0.0", "--port", "80"]
