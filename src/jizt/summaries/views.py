@@ -93,8 +93,8 @@ async def get_summary_view(summary_id: str):
                             detail=f"Summary '{summary_id}' not found.")
     response = summary.dict().copy()
     # Match response attribues
-    if "id_" in response:
-        response["summary_id"] = response.pop("id_")
+    response.pop("id_")
+    response["summary_id"] = summary_id  # match the request id
     # response.update(warnings)  # TODO
     response["warnings"] = {}  # TODO: delete
     return response
