@@ -1,4 +1,4 @@
-**/models/t5-small/*
+**/models/t5-*/*
 *secret*
 
 # Byte-compiled / optimized / DLL files
