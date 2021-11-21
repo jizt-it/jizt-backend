@@ -28,7 +28,19 @@ COPY ./src/jizt ./jizt
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PATH="/opt/venv/bin:$PATH"
+ENV DOCKER_HOST="tcp://socket-proxy:2375"
 
 RUN python3 -c 'import nltk; nltk.download("punkt")'
+
+# Set labels
+LABEL version="0.0.1"
+LABEL traefik.enable="true"
+LABEL traefik.docker.network="traefik_public"
+LABEL traefik.http.routers.jizt-backend.tls="true"
+LABEL traefik.http.routers.jizt-backend.tls.certresolver="letsencrypt"
+LABEL traefik.http.routers.jizt-backend.rule="Host(`api.jizt.it`)"
+LABEL traefik.http.routers.jizt-backend.entrypoints="web,websecure"
+LABEL traefik.http.routers.jizt-backend.service="jizt-backend-svc"
+LABEL traefik.http.services.jizt-backend-svc.loadbalancer.server.port="80"
 
 CMD ["uvicorn", "jizt.main:app", "--workers", "2", "--host", "0.0.0.0", "--port", "80"]
