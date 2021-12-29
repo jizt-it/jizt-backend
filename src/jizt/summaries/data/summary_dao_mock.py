@@ -206,9 +206,10 @@ class SummaryDAOMock(SummaryDAOInterface):
         self.REQUEST_TABLE.update(update_request)
         # Update summary_ids in summaries table
         self.SUMMARY_TABLE[new_summary_id] = self.SUMMARY_TABLE.pop(old_summary_id)
-        # Update source_id in source table
+        # Update source_id in summary and source tables
         old_source_id = self._get_unique_key(old_source)
         new_source_id = self._get_unique_key(new_source)
+        self.SUMMARY_TABLE[new_summary_id].source_id = new_source_id
         self.SOURCE_TABLE[new_source_id] = self.SOURCE_TABLE.pop(old_source_id)
 
     @classmethod
