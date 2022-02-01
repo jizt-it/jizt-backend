@@ -1,9 +1,6 @@
 <p align="center"><img width="400" src="https://github.com/dmlls/jizt/blob/main/img/readme/JIZT-logo.svg" alt="Jizt"></p>
 
 <p align="center" display="inline-block">
-  <a href="https://github.com/jizt-it/jizt-backend/actions/workflows/deploy.yaml">
-    <img src="https://github.com/jizt-it/jizt-backend/actions/workflows/deploy.yaml/badge.svg" alt="Deploy to GKE">
-  </a>
   <a href="https://docs.jizt.it">
     <img src="https://github.com/jizt-it/jizt-backend/actions/workflows/build-docs.yml/badge.svg" alt="Build & Publish docs">
   </a>
