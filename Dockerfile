@@ -34,13 +34,5 @@ RUN python3 -c 'import nltk; nltk.download("punkt")'
 
 # Set labels
 LABEL version="0.0.1"
-LABEL traefik.enable="true"
-LABEL traefik.docker.network="traefik_public"
-LABEL traefik.http.routers.jizt-backend.tls="true"
-LABEL traefik.http.routers.jizt-backend.tls.certresolver="letsencrypt"
-LABEL traefik.http.routers.jizt-backend.rule="Host(`api.jizt.it`)"
-LABEL traefik.http.routers.jizt-backend.entrypoints="web,websecure"
-LABEL traefik.http.routers.jizt-backend.service="jizt-backend-svc"
-LABEL traefik.http.services.jizt-backend-svc.loadbalancer.server.port="80"
 
 CMD ["uvicorn", "jizt.main:app", "--workers", "2", "--host", "0.0.0.0", "--port", "80"]

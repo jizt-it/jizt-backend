@@ -1,0 +1,63 @@
+version: "3.9"
+
+networks:
+  socket_proxy:
+    name: socket_proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+  traefik_public:
+    name: traefik_public
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
+
+services:
+  socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: socket-proxy
+    privileged: true
+    networks:
+      socket_proxy:
+        ipv4_address: 192.168.90.254
+    ports:
+     - "127.0.0.1:2375:2375"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - LOG_LEVEL=info
+      - CONTAINERS=1 # Traefik
+  traefik:
+    image: traefik:v2.6
+    container_name: traefik
+    depends_on:
+      - "jizt"
+    networks:
+      traefik_public:
+        ipv4_address: 192.168.91.254
+      socket_proxy:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${JIZTDIR}/traefik/traefik.yml:/etc/traefik/traefik.yml
+    labels:
+      - "traefik.enable=true"
+  jizt:
+    image: jizt/backend:0.0.1
+    container_name: jizt-backend
+    depends_on:
+    - "socket-proxy"
+    networks:
+      - "traefik_public"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_public"
+      - "traefik.http.routers.jizt-backend.tls=true"
+      - "traefik.http.routers.jizt-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.jizt-backend.rule=Host(`api.jizt.it`)"
+      - "traefik.http.routers.jizt-backend.entrypoints=web,websecure"
+      - "traefik.http.routers.jizt-backend.service=jizt-backend-svc"
+      - "traefik.http.services.jizt-backend-svc.loadbalancer.server.port=80"

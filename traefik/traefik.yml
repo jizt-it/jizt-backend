@@ -31,5 +31,9 @@ certificatesResolvers:
     acme:
       email: "contact@jizt.it"
       storage: "acme.json"
+      # Let's Encrypt staging server:
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      # Let's Encrypt production server:
+      # caServer: https://acme-v02.api.letsencrypt.org/directory
       httpChallenge:
         entryPoint: web
