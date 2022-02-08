@@ -21,7 +21,8 @@
 __version__ = '0.1.0'
 
 import logging
-from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends, status
+from fastapi import (APIRouter, HTTPException, BackgroundTasks, Depends,
+                     Response, status)
 from jizt.config import LOG_LEVEL
 from .models import PlainTextRequestSchema, ResponseSchema, Summary
 from .service import generate_summary, get_summary
@@ -39,6 +40,7 @@ router = APIRouter()
              status_code=status.HTTP_202_ACCEPTED)
 async def request_summary_view(
     request: PlainTextRequestSchema,
+    response: Response,
     background_tasks: BackgroundTasks,
     result: tuple[Summary, dict] = Depends(generate_summary)  # TODO: model for warnings
 ) -> ResponseSchema:
@@ -57,6 +59,9 @@ async def request_summary_view(
     Raises: :class:`http.client.HTTPException`:
         If the request body JSON is not valid.
     """
+    if not request.source:
+        response.status_code = status.HTTP_204_NO_CONTENT
+        return
     summary, warnings = result
     response = summary.dict().copy()
     # Match response attributes

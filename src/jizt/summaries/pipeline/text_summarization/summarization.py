@@ -44,12 +44,12 @@ class Summarizer:
 
     def __init__(
         self,
-        SUMM_TOKENIZER_PATH: str = SUMM_TOKENIZER_PATH,
-        SUMM_MODEL_PATH: str = SUMM_MODEL_PATH,
+        tokenizer_path: str = SUMM_TOKENIZER_PATH,
+        model_path: str = SUMM_MODEL_PATH,
         log_level: int = LOG_LEVEL
     ):
-        self._tokenizer = T5Tokenizer.from_pretrained(SUMM_TOKENIZER_PATH)
-        self._model = T5ForConditionalGeneration.from_pretrained(SUMM_MODEL_PATH)
+        self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
+        self._model = T5ForConditionalGeneration.from_pretrained(model_path)
         logging.basicConfig(
             format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
             level=log_level,

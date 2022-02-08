@@ -47,10 +47,10 @@ class SplitterEncoder:
 
     def __init__(
         self,
-        SUMM_TOKENIZER_PATH: str = SUMM_TOKENIZER_PATH,
+        tokenizer_path: str = SUMM_TOKENIZER_PATH,
         log_level: int = LOG_LEVEL
     ):
-        self._tokenizer = T5Tokenizer.from_pretrained(SUMM_TOKENIZER_PATH)
+        self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
         if LOG_LEVEL != logging.DEBUG:
             # Deactivate warnings from the tokenizer
             logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
