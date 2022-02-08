@@ -29,6 +29,7 @@ from ..utils.id_generation import generate_summary_id
 from ..utils.summary_status import SummaryStatus
 from jizt.config import LOG_LEVEL
 
+
 class SummarizationPipeline:
     """Summarization pipeline.
 

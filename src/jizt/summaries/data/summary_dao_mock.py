@@ -24,9 +24,6 @@ import logging
 import hashlib
 from dataclasses import dataclass
 from datetime import datetime
-from io import StringIO
-from collections import OrderedDict
-from psycopg2.extras import Json
 from .summary_dao_interface import SummaryDAOInterface
 from ..models import Summary
 from ..utils.summary_status import SummaryStatus
@@ -169,7 +166,7 @@ class SummaryDAOMock(SummaryDAOInterface):
         self,
         request_id: str,
         output: str = None,
-        output_length = None,
+        output_length: int = None,
         params: dict = None,
         status: str = None,
         started_at: datetime = None,

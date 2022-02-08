@@ -24,6 +24,7 @@ import logging
 # from .summary_dao_postgresql import SummaryDAOPostgresql
 from .summary_dao_mock import SummaryDAOMock
 
+
 class SummaryDAOSingleton:
     """Summary DAO Singleton."""
 

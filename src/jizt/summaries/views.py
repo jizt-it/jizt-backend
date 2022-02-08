@@ -57,7 +57,6 @@ async def request_summary_view(
     Raises: :class:`http.client.HTTPException`:
         If the request body JSON is not valid.
     """
-
     summary, warnings = result
     response = summary.dict().copy()
     # Match response attribues

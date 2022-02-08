@@ -56,7 +56,6 @@ class TextPostprocessor:
         Returns:
             :obj:`str`: The post-processed text.
         """
-
         if not text:
             return text   # if text is empty just return it
 
@@ -75,5 +74,4 @@ class TextPostprocessor:
         Returns:
             :obj:`str`: The sentence with its first letter capitalized.
         """
-
         return f"{sent[0].upper()}{sent[1:]}"

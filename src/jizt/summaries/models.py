@@ -25,7 +25,7 @@ from pydantic import BaseModel
 from .utils.supported_models import SupportedModel
 from .utils.supported_languages import SupportedLanguage
 from .utils.summary_status import SummaryStatus
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional, Union
 
 
 class Summary():
@@ -39,7 +39,7 @@ class Summary():
         output (:obj:`str`):
             The output once the source has been processed, e.g., a summary.
         model (:obj:`utils.supported_models.SupportedModel`):
-            The model with wich the summary was generated.
+            The model with which the summary was generated.
         params (:obj:`dict`):
             The parameters with which the summary was generated.
         status (:obj:`utils.summary_status.SummaryStatus`):
@@ -52,16 +52,17 @@ class Summary():
             The language of the summary.
     """
 
-    def __init__(self,
-                 id_: str,
-                 source: str,
-                 output: str,
-                 model: SupportedModel,
-                 params: dict,
-                 status: SummaryStatus,
-                 started_at: datetime,
-                 ended_at: datetime,
-                 language: SupportedLanguage
+    def __init__(
+        self,
+        id_: str,
+        source: str,
+        output: str,
+        model: SupportedModel,
+        params: Dict[str, Union[bool, int, float]],
+        status: SummaryStatus,
+        started_at: datetime,
+        ended_at: datetime,
+        language: SupportedLanguage
     ):  # 2020 be like
         self.id_ = id_
         self.source = source

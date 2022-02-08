@@ -119,7 +119,7 @@ class SplitterEncoder:
             return_tensors (:obj:`str` or :class:`~transformers.tokenization_utils_base.TensorType`,
                             `optional`, defaults to 'pt'):
                 If set, will return tensors instead of list of python integers.
-                
+
                 Acceptable values are:
 
                 * :obj:`'pt'`: Return PyTorch :obj:`torch.Tensor` objects.
@@ -180,9 +180,10 @@ class SplitterEncoder:
 
         return encoded_subdivs
 
-    def _divide_eagerly(self,
-                        sent2ntks: List[int],
-                        ntks_prefix: int
+    def _divide_eagerly(
+        self,
+        sent2ntks: List[int],
+        ntks_prefix: int
     ) -> Tuple[List[int], List[int]]:
         """Subdivide the text eagerly.
 
@@ -222,10 +223,11 @@ class SplitterEncoder:
         subdiv2ntks.append(subdiv_len)
         return split_points, subdiv2ntks
 
-    def _balance_subdivisions(self,
-                              split_points: List[int],
-                              subdiv2ntks: List[int],
-                              sent2ntks: List[int]
+    def _balance_subdivisions(
+        self,
+        split_points: List[int],
+        subdiv2ntks: List[int],
+        sent2ntks: List[int]
     ) -> Tuple[List[int], List[int]]:
         """Balance the subdivisions in terms of length.
 

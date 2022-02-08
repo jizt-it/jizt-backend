@@ -41,7 +41,6 @@ def generate_summary_id(source: str, model: str, params: dict) -> str:
     Returns:
         :obj:`str`: The unique, SHA-256 encrypted key.
     """
-
     return hashlib.sha256(
         (f"{source}{model}{str(params)}").encode()
     ).hexdigest()
