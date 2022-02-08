@@ -1,9 +1,11 @@
 FROM python:3.9-slim AS builder 
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    build-essential \
-    python3-dev
+  && apt-get install -y --no-install-recommends \
+       build-essential=12.9ubuntu2 \
+       python3-dev=3.9.7-4 \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
