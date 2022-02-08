@@ -4,11 +4,11 @@
   <a href="https://docs.jizt.it">
     <img src="https://github.com/jizt-it/jizt-backend/actions/workflows/build-docs.yml/badge.svg" alt="Build & Publish docs">
   </a>
-  <a href="https://deepsource.io/gh/jizt-it/jizt-backend/?ref=repository-badge">
-    <img src="https://deepsource.io/gh/jizt-it/jizt-backend.svg/?label=active+issues" alt="Active Issues">
+  <a href="https://deepsource.io/gh/jizt-it/jizt-backend-mono/?ref=repository-badge}" target="_blank">
+    <img alt="Active Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend-mono.svg/?label=active+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
   </a>
-  <a href="https://deepsource.io/gh/jizt-it/jizt-backend/?ref=repository-badge">
-    <img src="https://deepsource.io/gh/jizt-it/jizt-backend.svg/?label=resolved+issues" alt="Resolved Issues">
+  <a href="https://deepsource.io/gh/jizt-it/jizt-backend-mono/?ref=repository-badge}" target="_blank">
+    <img alt="Resolved Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend-mono.svg/?label=resolved+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
   </a>
 </p>
 
