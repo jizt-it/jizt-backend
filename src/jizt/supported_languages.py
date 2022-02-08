@@ -15,32 +15,30 @@
 #
 # For license information on the libraries used, see LICENSE.
 
-"""API Configuration."""
+"""Languages supported by Jizt."""
 
 __version__ = '0.1.0'
 
-import logging
-from starlette.config import Config
-from pathlib import Path
+from enum import Enum
 
-log = logging.getLogger(__name__)
-config = Config("jizt/.env")
 
-logging.getLogger("urllib3").setLevel(logging.INFO)
+class SupportedLanguage(Enum):
+    """Languages supported by Jizt.
 
-LOG_LEVEL: str = config("LOG_LEVEL", default=logging.DEBUG)
-ENV: str = config("ENV", default="local")
+    The values are specified following the ISO 639-1 language codes.
+    """
 
-# Project's root directory
-ROOT_DIR: Path = Path(__file__).parent.resolve()
+    ENGLISH = "en"
 
-# Summarization Model
-SUMM_TOKENIZER_PATH: Path = config("SUMM_TOKENIZER_PATH", cast=Path, default="t5-base")
-SUMM_MODEL_PATH: Path = config("SUMM_MODEL_PATH", cast=Path, default="t5-base")
+    @classmethod
+    def is_supported(cls, lang: str) -> bool:
+        """Check if a language is supported.
 
-# FastText Language Detection Model
-FASTTEXT_MODEL_PATH: Path = config(
-    "FASTTEXT_MODEL_PATH",
-    cast=Path,
-    default=f"{ROOT_DIR}/language_detection/language_detection/models/lid.176.ftz"
-)
+        Args:
+            lang (:obj:`str`):
+                The language code (ISO 639-1) to check support for.
+
+        Returns:
+            :obj:`bool`: Whether the language is supported or not.
+        """
+        return lang in cls._value2member_map_

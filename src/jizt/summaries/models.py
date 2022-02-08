@@ -22,8 +22,8 @@ __version__ = '0.1.0'
 
 from datetime import datetime
 from pydantic import BaseModel
+from jizt.supported_languages import SupportedLanguage
 from .utils.supported_models import SupportedModel
-from .utils.supported_languages import SupportedLanguage
 from .utils.summary_status import SummaryStatus
 from typing import Any, Dict, List, Optional, Union
 
@@ -48,7 +48,7 @@ class Summary():
             The time when the summary was first requested.
         ended_at (:obj:`datetime.datetime`):
             The time when the summary first finished.
-        language (:obj:utils.supported_languages.SupportedLanguage):
+        language (:obj:jizt.supported_languages.SupportedLanguage):
             The language of the summary.
     """
 
@@ -104,8 +104,8 @@ class PlainTextRequestSchema(BaseModel):
             The model used to generate the summary.
         params (:obj:`dict`, `optional`, defaults to :obj:`{}`):
             The params used in the summary generation.
-        language (:obj:utils.supported_languages.SupportedLanguage, `optional`,
-                  defaults to :obj:utils.supported_languages.SupportedLanguag.ENGLISH):
+        language (:obj:jizt.supported_languages.SupportedLanguage, `optional`,
+                  defaults to :obj:jizt.supported_languages.SupportedLanguage.ENGLISH):
             The language of the text.
         cache (:obj:`bool`), `optional`, defaults to :obj:`True`):
             Whether the summary must be cached or not. A cached summary implies
@@ -142,7 +142,7 @@ class ResponseSchema(BaseModel):
             The model with wich the summary was generated.
         params (:obj:`dict`):
             The parameters with which the summary was generated.
-        language (:obj:utils.supported_languages.SupportedLanguage):
+        language (:obj:jizt.supported_languages.SupportedLanguage):
             The language of the summary.
         warnings (:obj:`dict`):
             The warnings derived from the client's request (if any).

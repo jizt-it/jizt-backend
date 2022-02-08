@@ -22,11 +22,13 @@ __version__ = '0.1.0'
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 from .summaries.views import router as summaries_router
+from .language_detection.views import router as language_detection_router
 
 # v1 routes
 api_router_v1 = APIRouter()
 
 api_router_v1.include_router(summaries_router, prefix="/summaries", tags=["summaries"])
+api_router_v1.include_router(language_detection_router, prefix="/language-detection", tags=["language-detection"])
 
 # root routes
 api_router_root = APIRouter()

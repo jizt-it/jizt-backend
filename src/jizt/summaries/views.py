@@ -59,7 +59,7 @@ async def request_summary_view(
     """
     summary, warnings = result
     response = summary.dict().copy()
-    # Match response attribues
+    # Match response attributes
     response["summary_id"] = response.pop("id_")
     # response.update(warnings)  # TODO
     response["warnings"] = {}  # TODO: delete

@@ -15,14 +15,25 @@
 #
 # For license information on the libraries used, see LICENSE.
 
-"""Current supported languages."""
+
+"""Schemas for '/language-detection' endpoint."""
 
 __version__ = '0.1.0'
 
-from enum import Enum
+from pydantic import BaseModel
 
 
-class SupportedLanguage(Enum):
-    """Supported languages."""
+class DetectedLanguage(BaseModel):
+    """Data model for the detected language.
 
-    ENGLISH = "en"
+    It also serves as schema for responses to the clients' requests.
+
+    Attributes:
+        language (:obj:`str`):
+            The ISO 639-1 code of the detected language (e.g., ``"en"``).
+        confidence (:obj:`float`):
+            The confidence of the model when predicting the language.
+    """
+
+    language: str
+    confidence: float

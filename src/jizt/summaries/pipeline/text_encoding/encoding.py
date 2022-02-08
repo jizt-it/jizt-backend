@@ -23,7 +23,7 @@ import logging
 import torch
 from transformers import T5Tokenizer, tokenization_utils_base
 from ..text_processing.tokenization import sentence_tokenize
-from jizt.config import LOG_LEVEL, TOKENIZER_PATH
+from jizt.config import LOG_LEVEL, SUMM_TOKENIZER_PATH
 from typing import List, Tuple, Optional, Union
 
 
@@ -47,10 +47,10 @@ class SplitterEncoder:
 
     def __init__(
         self,
-        tokenizer_path: str = TOKENIZER_PATH,
+        SUMM_TOKENIZER_PATH: str = SUMM_TOKENIZER_PATH,
         log_level: int = LOG_LEVEL
     ):
-        self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
+        self._tokenizer = T5Tokenizer.from_pretrained(SUMM_TOKENIZER_PATH)
         if LOG_LEVEL != logging.DEBUG:
             # Deactivate warnings from the tokenizer
             logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)

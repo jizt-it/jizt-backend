@@ -23,7 +23,7 @@ import math
 import logging
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
-from jizt.config import LOG_LEVEL, TOKENIZER_PATH, MODEL_PATH
+from jizt.config import LOG_LEVEL, SUMM_TOKENIZER_PATH, SUMM_MODEL_PATH
 from typing import List, Optional, Union, Iterable
 
 
@@ -44,12 +44,12 @@ class Summarizer:
 
     def __init__(
         self,
-        tokenizer_path: str = TOKENIZER_PATH,
-        model_path: str = MODEL_PATH,
+        SUMM_TOKENIZER_PATH: str = SUMM_TOKENIZER_PATH,
+        SUMM_MODEL_PATH: str = SUMM_MODEL_PATH,
         log_level: int = LOG_LEVEL
     ):
-        self._tokenizer = T5Tokenizer.from_pretrained(tokenizer_path)
-        self._model = T5ForConditionalGeneration.from_pretrained(model_path)
+        self._tokenizer = T5Tokenizer.from_pretrained(SUMM_TOKENIZER_PATH)
+        self._model = T5ForConditionalGeneration.from_pretrained(SUMM_MODEL_PATH)
         logging.basicConfig(
             format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
             level=log_level,

@@ -26,11 +26,11 @@ import hashlib
 from io import StringIO
 from collections import OrderedDict
 from psycopg2.extras import Json
+from jizt.supported_languages import SupportedLanguage
 from summary_dao_interface import SummaryDAOInterface
 from models import Summary
 from summary_status import SummaryStatus
 from supported_models import SupportedModel
-from supported_languages import SupportedLanguage
 from datetime import datetime
 
 

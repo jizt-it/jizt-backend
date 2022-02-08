@@ -23,15 +23,15 @@ __version__ = '0.1.0'
 import copy
 import logging
 from datetime import datetime
+from typing import Dict, Any
 from fastapi import BackgroundTasks
+from jizt.config import LOG_LEVEL
+from jizt.supported_languages import SupportedLanguage
 from .pipeline.pipeline import SummarizationPipeline
 from .data.summary_dao_singleton import SummaryDAOSingleton
 from .models import PlainTextRequestSchema, Summary
-from .utils.supported_languages import SupportedLanguage
 from .utils.summary_status import SummaryStatus
 from .utils.id_generation import generate_request_id, generate_summary_id
-from jizt.config import LOG_LEVEL
-from typing import Dict, Any
 
 logging.basicConfig(
     format='%(asctime)s %(name)s %(levelname)-8s %(message)s',

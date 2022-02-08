@@ -24,12 +24,13 @@ import logging
 import hashlib
 from dataclasses import dataclass
 from datetime import datetime
+from collections import OrderedDict
+from jizt.supported_languages import SupportedLanguage
 from .summary_dao_interface import SummaryDAOInterface
 from ..models import Summary
 from ..utils.summary_status import SummaryStatus
 from ..utils.id_generation import generate_source_id
 from ..utils.supported_models import SupportedModel
-from ..utils.supported_languages import SupportedLanguage
 from typing import Tuple
 
 
@@ -218,6 +219,6 @@ class SummaryDAOMock(SummaryDAOInterface):
                 The text to get the unique id from.
 
         Returns:
-            :obj:`str`: The unique, SHA-256 ecrypted key.
+            :obj:`str`: The unique, SHA-256 encrypted key.
         """
         return hashlib.sha256(text.encode()).hexdigest()
