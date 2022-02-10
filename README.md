@@ -4,11 +4,11 @@
   <a href="https://docs.jizt.it">
     <img src="https://github.com/jizt-it/jizt-backend/actions/workflows/build-docs.yml/badge.svg" alt="Build & Publish docs">
   </a>
-  <a href="https://deepsource.io/gh/jizt-it/jizt-backend-mono/?ref=repository-badge}" target="_blank">
-    <img alt="Active Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend-mono.svg/?label=active+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
+  <a href="https://deepsource.io/gh/jizt-it/jizt-backend/?ref=repository-badge}" target="_blank">
+    <img alt="Active Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend.svg/?label=active+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
   </a>
-  <a href="https://deepsource.io/gh/jizt-it/jizt-backend-mono/?ref=repository-badge}" target="_blank">
-    <img alt="Resolved Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend-mono.svg/?label=resolved+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
+  <a href="https://deepsource.io/gh/jizt-it/jizt-backend/?ref=repository-badge}" target="_blank">
+    <img alt="Resolved Issues" title="DeepSource" src="https://deepsource.io/gh/jizt-it/jizt-backend.svg/?label=resolved+issues&token=CTJ2c-oMgsGk_zTpJ14pcQRY"/>
   </a>
 </p>
 
@@ -17,11 +17,11 @@
 
 Jizt makes use of the latest advances in Natural Language Processing (NLP), using state-of-the-art language generation models, such as Google's <a href="https://arxiv.org/abs/1910.10683">T5</a> model, to provide accurate and complete abstractive summaries.
 
-## Jizt in 86 words
+## Jizt in 70 words
 
 📄 Jizt generates abstractive summaries, i.e. summaries containing words or expressions that do not appear in the original text. In addition, it allows you to adjust the parameters of the summary, such as its length or the generation method to be used.
 
-📡 Jizt provides a REST API supported by a backend that implements an event-driven microservices architecture (Kubernetes + Apache Kafka), in order to provide scalability and high availability. The REST API documentation is accessible via [docs.api.jizt.it](https://docs.api.jizt.it).
+📡 Jizt exposes a REST API anyone can use to generate summaries. The API documentation is accessible via [docs.api.jizt.it](https://docs.api.jizt.it).
 
 ✨ Check out our app! Available at [app.jizt.it](https://app.jizt.it) and through [Google Play](https://play.google.com/store/apps/details?id=it.jizt.app).
 

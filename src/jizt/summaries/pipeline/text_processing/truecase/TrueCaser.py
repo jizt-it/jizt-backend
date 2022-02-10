@@ -27,7 +27,7 @@ import re
 
 class TrueCaser(object):
     def __init__(self, dist_file_path=None):
-        """ Initialize module with default data/english.dist file """
+        """Initialize module with default data/english.dist file."""
         if dist_file_path is None:
             dist_file_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
@@ -108,7 +108,7 @@ class TrueCaser(object):
         return f'{raw[0].upper()}{raw[1:]}'
 
     def get_true_case(self, sentence, out_of_vocabulary_token_option="title"):
-        """ Returns the true case for the passed tokens.
+        """Returns the true case for the passed tokens.
 
         @param tokens: Tokens in a single sentence
         @param outOfVocabulariyTokenOption:

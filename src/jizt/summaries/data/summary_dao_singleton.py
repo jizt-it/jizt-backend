@@ -32,9 +32,11 @@ class SummaryDAOSingleton:
 
     def __new__(cls, log_level: int = logging.ERROR) -> SummaryDAOMock:
         """Singleton.
+
         Args:
             log_level (:obj:`int`, `optional`, defaults to `logging.ERROR`):
                 The log level.
+
         Returns:
             :obj:`SummaryDAOPostgresql`: The single instance of the DAO.
         """
