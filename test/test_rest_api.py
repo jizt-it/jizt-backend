@@ -28,7 +28,7 @@ API_URL = "https://api.jizt.it"
 
 # Default values returned by the backend
 DEFAULT_VALUES = {
-    "model": "t5-large",
+    "model": "t5",
     "params": {
         "relative_max_length": 0.4,
         "relative_min_length": 0.1,
@@ -47,7 +47,7 @@ DEFAULT_VALUES = {
 
 TEXT = """Social cooling refers to the idea that if “you feel you are being watched,
           you change your behavior.” And the massive amounts of data being collected,
-          especially online, is exxagerating this effect. This may limit our desire
+          especially online, is exaggerating this effect. This may limit our desire
           to speak or think freely thus bring about “chilling effects” on society—or
           social cooling. Here’s a summary of how this works: 1.  Your data is
           collected and scored. Then data brokers use algorithms to reveal thousands
@@ -99,7 +99,6 @@ TEXT = """Social cooling refers to the idea that if “you feel you are being wa
 
 def test_request_no_source():
     """Request with no source -> Invalid."""
-
     json_attributes = {}
     response = post(json_attributes)
     assert response.status_code == 400  # Bad Request
@@ -109,7 +108,6 @@ def test_request_no_source():
 
 def test_request_only_source():
     """Request only specifying source -> Valid."""
-
     # We add a hash at the end of the source to avoid caching
     json_attributes = {'source': get_random_text()}
     post_pull_validate_response(json_attributes)
@@ -131,7 +129,6 @@ def test_request_source_and_non_existent_params():
 
     Non existent params will be ignored and the default model will be used
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 0.4,
                                   'non-existing-param': True,  # should be ignored
@@ -151,7 +148,6 @@ def test_request_param_only_relative_max_length():
     
     The ``relative_min_length`` will be set with a default value by the backend.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 0.7}}
     response = post_pull_validate_response(json_attributes)
@@ -163,7 +159,6 @@ def test_request_param_only_relative_min_length():
 
     The ``relative_max_length`` will be set with a default value by the backend.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_min_length': 0.2}}
     response = post_pull_validate_response(json_attributes)
@@ -177,7 +172,6 @@ def test_request_param_only_relative_min_length_greater_than_default():
     it's incorrect. Therefore, default values should be set by the backend for both
     ``relative_max_length`` and ``relative_min_length``.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_min_length': 0.7}}  # too long!
     response = post_pull_validate_response(json_attributes)
@@ -189,13 +183,12 @@ def test_request_param_only_relative_min_length_greater_than_default():
 
 
 def test_request_param_only_relative_max_length_smaller_than_default():
-    """Request specifiying only the ``relative_max_length`` parameter.
+    """Request specifying only the ``relative_max_length`` parameter.
 
     However, this value is smaller (or equal) than the default
     ``relative_min_length``, i.e., it's incorrect. Therefore, default values should be
      set by the backend for both ``relative_max_length`` and ``relative_min_length``.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 0.1}}  # too long!
     response = post_pull_validate_response(json_attributes)
@@ -212,7 +205,6 @@ def test_request_param_relative_max_length_smaller_than_relative_min_length():
     As the ``relative_max_length`` cannot be smaller than the ``relative_min_length``,
     default values should be set by the backend for both of them.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 0.2,
                                   'relative_min_length': 0.5}}
@@ -229,7 +221,6 @@ def test_request_param_relative_max_length_smaller_than_relative_min_length():
 
 def test_request_param_relative_max_min_length_out_of_range():
     """Request setting both the min and the max length out the range [0.0, 1.0] -> Invalid."""
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 1.1,
                                   'relative_min_length': -0.1}}
@@ -246,7 +237,6 @@ def test_request_param_relative_max_min_length_out_of_range():
 
 def test_request_param_relative_max_length_out_of_range_min_length_greater_than_default():
     """Request with max length out of range and min lenght greater than default max length -> Invalid."""
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 1.5,
                                   'relative_min_length': 0.6}}  # default max length is 0.4
@@ -263,7 +253,6 @@ def test_request_param_relative_max_length_out_of_range_min_length_greater_than_
 
 def test_request_param_relative_max_min_length_in_boundaries():
     """Request setting the min and the max length in the boundaries [0.0, 1.0] -> Valid."""
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 1.0,
                                   'relative_min_length': 0.1}}
@@ -276,7 +265,6 @@ def test_request_incorrect_boolean_params():
 
     These parameters are ``do_sample`` and ``early_stopping``.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'do_sample': 'this is a string',
                                   'early_stopping': 666}}
@@ -297,7 +285,6 @@ def test_request_incorrect_number_params():
     These parameters are ``num_beams``, ``temperature``, ``top_k``, ``top_p``,
     ``repetition_penalty``, ``length_penalty`` and ``no_repeat_ngram_size``.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'num_beams': 'this is a string',
                                   'temperature': True,
@@ -338,7 +325,6 @@ def test_request_incorrect_negative_number_params():
     These parameters are ``relative_max_length``, ``relative_min_length``,
     ``num_beams`` and ``no_repeat_ngram_size``.
     """
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': -1,
                                   'relative_min_length': -2,
@@ -363,7 +349,6 @@ def test_request_incorrect_negative_number_params():
 
 def test_request_source_and_model():
     """Request specifying source and model -> Valid."""
-
     json_attributes = {'source': get_random_text(),
                        'model': 't5-large'}
     response = post_pull_validate_response(json_attributes)
@@ -375,7 +360,6 @@ def test_request_source_and_unsupported_model():
 
     The specified model will be ignored and the default model will be used.
     """
-
     json_attributes = {'source': get_random_text(),
                        'model': 't5-huge'}
     response = post_pull_validate_response(json_attributes)
@@ -389,7 +373,6 @@ def test_request_source_and_unsupported_language():
 
     The specified language will be ignored and the default language will be used.
     """
-
     json_attributes = {'source': get_random_text(),
                        'language': 'tlh'}
     response = post_pull_validate_response(json_attributes)
@@ -400,7 +383,6 @@ def test_request_source_and_unsupported_language():
 
 def test_request_unsupported_model_language_and_bad_params():
     """Request specifying an unsupported model, language, and bad params. -> Invalid.
-
     Default values should be returned in the response.
     """
 
@@ -433,7 +415,6 @@ def test_request_unsupported_model_language_and_bad_params():
 
 def test_request_source_params_model():
     """Request specifying source, params and model -> Valid."""
-
     json_attributes = {'source': get_random_text(),
                        'params': {'relative_max_length': 0.4,
                                   'relative_min_length': 0.2,
@@ -446,7 +427,6 @@ def test_request_source_params_model():
 
 def test_default_values():
     """Check that the API returns the correct default values."""
-
     json_attributes = {'source': get_random_text()}
     response_json = post_pull_validate_response(json_attributes).json()
     assert DEFAULT_VALUES["model"] == response_json["model"]
@@ -460,12 +440,10 @@ def test_default_values():
 
 def get_random_text():
     """Concatenate a hash value to a predefined text to get a random text."""
-
     return f'{TEXT} {hash(random.random())}'
 
 def post_pull_validate_response(json_attributes):
     """HTTP POST request, pull and validation."""
-
     response = post(json_attributes)
     assert response.status_code == 202  # Accepted
     validate_response(response)
@@ -477,7 +455,6 @@ def post_pull_validate_response(json_attributes):
 
 def post(json_attributes):
     """HTTP POST request."""
-
     url = f"{API_URL}/v1/summaries/plain-text"
     response = requests.post(url, json=json_attributes)
     return response
@@ -485,7 +462,6 @@ def post(json_attributes):
 
 def pull(response):
     """Make consecutive GET requests until the summary is completed."""
-
     summary_id = response.json()['summary_id']
     while True:
         if response.json()['status'] == 'completed':
@@ -497,7 +473,6 @@ def pull(response):
 
 def get(summary_id):
     """HTTP POST request."""
-
     url = f"{API_URL}/v1/summaries/plain-text/{summary_id}"
     response = requests.get(url)
     return response
@@ -505,7 +480,6 @@ def get(summary_id):
 
 def validate_response(response, validate_params=False):
     """Check that a response contains all fields."""
-
     all_attributes = ("summary_id", "started_at", "ended_at",
                       "status", "output", "model", "params", "language")
     response_json = response.json()
@@ -518,7 +492,6 @@ def validate_response(response, validate_params=False):
 
 def validate_fields(response, json_attributes):
     """Check that the specified attributes have been correctly set."""
-
     response_json = response.json()
     # The source is not included in the response, so we ignore it
     del json_attributes["source"]

@@ -1,17 +1,15 @@
 import sys
 from os.path import abspath, dirname, join
 
-paths = (
-    abspath(join(dirname(dirname(__file__)), "services")),
+paths = [
+    abspath(join(dirname(dirname(__file__)), "src/jizt/summaries")),
     abspath(join(dirname(dirname(__file__)),
-                 "services/text_preprocessor")),
+                 "pipeline/text_processing")),
     abspath(join(dirname(dirname(__file__)),
-                 "services/t5_large_encoder")),
+                 "pipeline/text_encoding")),
     abspath(join(dirname(dirname(__file__)),
-                 "services/t5_large_summarizer")),
-    abspath(join(dirname(dirname(__file__)),
-                 "services/text_postprocessor"))
-)
+                 "pipeline/text_summarization"))
+]
 
 for p in paths:
     sys.path.insert(1, p)
