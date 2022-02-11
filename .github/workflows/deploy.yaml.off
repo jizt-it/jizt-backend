@@ -1,4 +1,4 @@
-name: Test deployment
+name: Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   test-deploy:
-    name: Test Jizt Backend Deployment
+    name: Deployment tests
     runs-on: ubuntu-latest
     steps:
     
