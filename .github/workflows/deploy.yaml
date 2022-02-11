@@ -1,0 +1,30 @@
+name: Test deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-deploy:
+    name: Test Jizt Backend Deployment
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set-up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install requirements
+      uses: BSFishy/pip-action@v1
+      with:
+        requirements: test/requirements.txt
+
+    - run: python -c 'import nltk; nltk.download("punkt")'
+
+    - name: Run tests
+      run: pytest test -v --ignore test/test_text_encoding.py
+
