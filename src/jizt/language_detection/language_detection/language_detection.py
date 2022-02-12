@@ -69,7 +69,7 @@ class LanguageDetector:
             :obj:`DetectedLanguage`: The detected language, together with the
             confidence of the prediction.
         """
-        language, confidence = self._model.predict(text)
+        language, confidence = self._model.predict(" ".join(text.split()))
         return DetectedLanguage(
             language=language[0].split("_")[-1],
             confidence=float(confidence[0].round(2))

@@ -18,12 +18,15 @@
 
 """Views for '/summaries' endpoint."""
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 import logging
 from fastapi import (APIRouter, HTTPException, BackgroundTasks, Depends,
                      Response, status)
 from jizt.config import LOG_LEVEL
+from jizt.supported_languages import SupportedLanguage
+from jizt.language_detection.language_detection.language_detection import \
+    LanguageDetectorSingleton
 from .models import PlainTextRequestSchema, ResponseSchema, Summary
 from .service import generate_summary, get_summary
 
@@ -34,6 +37,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("SummaryViews")
 router = APIRouter()
+
+lang_detector = LanguageDetectorSingleton()
 
 
 @router.post("/plain-text", response_model=ResponseSchema,
@@ -57,11 +62,18 @@ async def request_summary_view(
         ``{'summary_id': '73c3de4175449987ef6047f6e0bea91c1036a8599b'}``.
 
     Raises: :class:`http.client.HTTPException`:
-        If the request body JSON is not valid.
+        If the request is not valid.
     """
     if not request.source:
-        response.status_code = status.HTTP_204_NO_CONTENT
-        return
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
+
+    language = lang_detector.detect(request.source).language
+    if not SupportedLanguage.is_supported(language):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"detected language '{language}' not supported"
+        )
+
     summary, warnings = result
     response = summary.dict().copy()
     # Match response attributes
@@ -96,7 +108,7 @@ async def get_summary_view(summary_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Summary '{summary_id}' not found.")
     response = summary.dict().copy()
-    # Match response attribues
+    # Match response attributes
     response.pop("id_")
     response["summary_id"] = summary_id  # match the request id
     # response.update(warnings)  # TODO
