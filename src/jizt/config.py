@@ -44,3 +44,8 @@ FASTTEXT_MODEL_PATH: Path = config(
     cast=Path,
     default=f"{ROOT_DIR}/language_detection/language_detection/models/lid.176.ftz"
 )
+
+# Summarization params
+# Minimum number of words a text has to have to be summarized. This prevents
+# trying to summarize very short texts, which will yield bad results.
+MIN_WORDS_SOURCE: int = 20
