@@ -1,34 +1,33 @@
-# Bienvenido a la documentación de JIZT
+# Welcome to the Jizt docs!
 
-La documentación está disponible a través de [docs.jizt.it](https://docs.jizt.it). No
-obstante, si quieres compilar la documentación en local, debes seguir los pasos
-indicados a continuación.
+You can find the docs at [docs.jizt.it](https://docs.jizt.it). Besides, you can
+always compile the documentation locally. For that, simply follow the steps below.
 
-## Prerrequisitos
+## Prerequisites
 
-Para compilar la documentación, primero tienes que instalar los módulos de Python
-necesarios. Para ello, ejecuta el siguiente comando:
+First of all, create a virtual environment, activate it, and install the
+necessary requirements.
 
 ```bash
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Compilar la documentación
+## Compiling the docs
 
-Una vez instalados todos los prerrequisitos, puedes compilar la documentación
-ejecutando el siguiente comando en el directorio `/docs`:
+Once the requirements have been installed, execute the following in the
+`/docs` directory:
 
 ```bash
 make html
 ```
 
-Se creará un directorio con el nombre `_build/html`. Puedes abrir el fichero
-`_build/html/index.html` desde tu navegador para ver la documentación.
+A new directory `_build/html` will have been created. You can then open
+`_build/html/index.html` to open the compiled docs on your browser.
 
-**NOTE**: Si quieres modificar la documentación, y vas a añadir/eliminar elementos del
-toc-tree o de cualquier elemento estructural, se recomienda limpiar el directorio
-`_build` antes de volver a compilar la documentación. Para ello, puedes ejectuar el
-siguiente comando:
+**Note**: if you've made any changes to the docs source files, it is recommended
+that you clean-build by running:
 
 ```bash
 make clean && make html
