@@ -2,8 +2,8 @@ FROM python:3.9-slim AS builder
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-       build-essential=12.9ubuntu2 \
-       python3-dev=3.9.7-4 \
+       build-essential=12.9 \
+       python3-dev=3.9.2-3 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -37,6 +37,6 @@ ENV DOCKER_HOST="tcp://socket-proxy:2375"
 RUN python3 -c 'import nltk; nltk.download("punkt")'
 
 # Set labels
-LABEL version="0.0.1"
+LABEL version="0.0.2"
 
 CMD ["uvicorn", "jizt.main:app", "--workers", "2", "--host", "0.0.0.0", "--port", "80"]

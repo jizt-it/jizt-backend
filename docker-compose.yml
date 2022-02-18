@@ -46,7 +46,7 @@ services:
     labels:
       - "traefik.enable=true"
   jizt:
-    image: jizt/backend:0.0.1
+    image: jizt/backend:0.0.2
     container_name: jizt-backend
     depends_on:
     - "socket-proxy"
