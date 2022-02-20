@@ -23,7 +23,7 @@ __version__ = '0.1.1'
 import logging
 from fastapi import (APIRouter, HTTPException, BackgroundTasks, Depends,
                      Response, status)
-from jizt.config import LOG_LEVEL, MIN_WORDS_SOURCE
+from jizt.config import LOG_LEVEL, SUMM_DEFAULTS
 from jizt.supported_languages import SupportedLanguage
 from jizt.language_detection.language_detection.language_detection import \
     LanguageDetectorSingleton
@@ -67,10 +67,10 @@ async def request_summary_view(
     if not request.source:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
 
-    if len(request.source.split()) < MIN_WORDS_SOURCE:
+    if len(request.source.split()) < SUMM_DEFAULTS.min_words_source:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"source too short (<{MIN_WORDS_SOURCE} words)"
+            detail=f"source too short (<{SUMM_DEFAULTS.min_words_source} words)"
         )
 
     language = lang_detector.detect(request.source).language

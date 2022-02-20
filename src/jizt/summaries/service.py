@@ -18,14 +18,14 @@
 
 """Services for '/summaries' endpoint."""
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'
 
 import copy
 import logging
 from datetime import datetime
 from typing import Dict, Any
 from fastapi import BackgroundTasks
-from jizt.config import LOG_LEVEL
+from jizt.config import LOG_LEVEL, SUMM_DEFAULTS
 from jizt.supported_languages import SupportedLanguage
 from .pipeline.pipeline import SummarizationPipeline
 from .data.summary_dao_singleton import SummaryDAOSingleton
@@ -57,6 +57,8 @@ def generate_summary(
         (:obj:`None` if there are no warnings).
     """
     source, model, params, language, cache = request.dict().values()
+    if params is None:
+        params = SUMM_DEFAULTS.model_params.dict()
 
     request_id = generate_request_id(source, model, params)
     summary_id = generate_summary_id(source, model, params)

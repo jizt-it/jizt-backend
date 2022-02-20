@@ -17,10 +17,11 @@
 
 """API Configuration."""
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'
 
 import logging
 from starlette.config import Config
+from jizt.summaries.defaults import SummarizationDefaults
 from pathlib import Path
 
 log = logging.getLogger(__name__)
@@ -45,7 +46,5 @@ FASTTEXT_MODEL_PATH: Path = config(
     default=f"{ROOT_DIR}/language_detection/language_detection/models/lid.176.ftz"
 )
 
-# Summarization params
-# Minimum number of words a text has to have to be summarized. This prevents
-# trying to summarize very short texts, which will yield bad results.
-MIN_WORDS_SOURCE: int = 20
+# Summarization defaults
+SUMM_DEFAULTS: SummarizationDefaults = SummarizationDefaults()

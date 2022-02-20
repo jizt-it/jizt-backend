@@ -18,10 +18,11 @@
 
 """Schemas for '/summaries' endpoint."""
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'
 
 from datetime import datetime
 from pydantic import BaseModel
+from jizt.config import SUMM_DEFAULTS
 from jizt.supported_languages import SupportedLanguage
 from .utils.supported_models import SupportedModel
 from .utils.summary_status import SummaryStatus
@@ -91,6 +92,27 @@ class Summary():
                 f'{self.ended_at}, {self.language}')
 
 
+class SummarizationParams(BaseModel):
+    """Nested schema in :class:`PlainTextRequestSchema`.
+
+    For the attributes, see
+    :class:`jizt.summaries.defaults.SummarizationDefaults`.
+    """
+
+    relative_max_length: Optional[float] = SUMM_DEFAULTS.model_params.relative_max_length
+    # Same for the min length
+    relative_min_length: Optional[float] = SUMM_DEFAULTS.model_params.relative_min_length
+    do_sample: Optional[bool] = SUMM_DEFAULTS.model_params.do_sample
+    early_stopping: Optional[bool] = SUMM_DEFAULTS.model_params.early_stopping
+    num_beams: Optional[int] = SUMM_DEFAULTS.model_params.num_beams
+    temperature: Optional[float] = SUMM_DEFAULTS.model_params.temperature
+    top_k: Optional[int] = SUMM_DEFAULTS.model_params.top_k
+    top_p: Optional[float] = SUMM_DEFAULTS.model_params.top_p
+    repetition_penalty: Optional[float] = SUMM_DEFAULTS.model_params.repetition_penalty
+    length_penalty: Optional[float] = SUMM_DEFAULTS.model_params.length_penalty
+    no_repeat_ngram_size: Optional[int] = SUMM_DEFAULTS.model_params.no_repeat_ngram_size
+
+
 class PlainTextRequestSchema(BaseModel):
     """Schema for the clients' plain-text REST requests.
 
@@ -102,8 +124,9 @@ class PlainTextRequestSchema(BaseModel):
         model (:obj:`utils.supported_models.SupportedModel`, `optional`,
                defaults to :obj:`utils.supported_models.SupportedModel.T5`):
             The model used to generate the summary.
-        params (:obj:`dict`, `optional`, defaults to :obj:`{}`):
-            The params used in the summary generation.
+        params (:obj:`SummarizationParams`, `optional`):
+            The params used in the summary generation. If omitted, default
+            values will be used.
         language (:obj:jizt.supported_languages.SupportedLanguage, `optional`,
                   defaults to :obj:jizt.supported_languages.SupportedLanguage.ENGLISH):
             The language of the text.
@@ -114,7 +137,7 @@ class PlainTextRequestSchema(BaseModel):
 
     source: str
     model: Optional[SupportedModel] = SupportedModel.T5
-    params: Optional[Dict[str, Any]] = {}
+    params: Optional[SummarizationParams]
     language: Optional[SupportedLanguage] = SupportedLanguage.ENGLISH
     cache: Optional[bool]
 
@@ -139,8 +162,8 @@ class ResponseSchema(BaseModel):
         output (:obj:`str`):
             The processed text, e.g., the summary.
         model (:obj:`utils.supported_models.SupportedModel`):
-            The model with wich the summary was generated.
-        params (:obj:`dict`):
+            The model with which the summary was generated.
+        params (:obj:`SummarizationParams`):
             The parameters with which the summary was generated.
         language (:obj:jizt.supported_languages.SupportedLanguage):
             The language of the summary.
@@ -154,6 +177,6 @@ class ResponseSchema(BaseModel):
     status: SummaryStatus
     output: Optional[str]
     model: SupportedModel
-    params: Dict[str, Any] = {}
+    params: SummarizationParams
     language: SupportedLanguage
     warnings: Dict[str, List[str]]
