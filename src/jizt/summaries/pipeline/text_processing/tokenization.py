@@ -50,7 +50,7 @@ def sentence_tokenize(
     Args:
         text (:obj:`str`):
             Text to be split in sentences.
-        tokenizer (:obj:`nlkt.tokenize.RegexpTokenizer`, `optional`, defaults to :obj:`None`):
+        tokenizer (:obj:`nltk.tokenize.RegexpTokenizer`, `optional`, defaults to :obj:`None`):
             Regular expression to carry out a preliminar split (the text will be
             afterwards split once again by the :mod:`blingfire`
             :func:`text_to_sentences` function).
