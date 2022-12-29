@@ -21,11 +21,11 @@
 __version__ = '0.1.0'
 
 import logging
-import psycopg2
+import psycopg
 import hashlib
 from io import StringIO
 from collections import OrderedDict
-from psycopg2.extras import Json
+from psycopg.types.json import Json
 from jizt.supported_languages import SupportedLanguage
 from summary_dao_interface import SummaryDAOInterface
 from models import Summary
