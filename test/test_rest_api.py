@@ -385,7 +385,6 @@ def test_request_unsupported_model_language_and_bad_params():
     """Request specifying an unsupported model, language, and bad params. -> Invalid.
     Default values should be returned in the response.
     """
-
     json_attributes = {'source': get_random_text(),
                        'model': 't5-huge',
                        'language': 'tlh',

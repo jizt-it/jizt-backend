@@ -154,7 +154,7 @@ class Summarizer:
             :obj:`str`: The generated summary.
         """
         summary_subdivs = []
-        input_ids_total_len = sum([len(ids.squeeze()) for ids in input_ids])
+        input_ids_total_len = sum(len(ids.squeeze()) for ids in input_ids)
         max_length = input_ids_total_len * relative_max_length
         min_length = input_ids_total_len * relative_min_length
         subdiv_max_length = math.floor(max_length / len(input_ids))

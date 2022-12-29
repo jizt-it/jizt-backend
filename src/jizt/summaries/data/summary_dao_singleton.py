@@ -40,7 +40,6 @@ class SummaryDAOSingleton:
         Returns:
             :obj:`SummaryDAOPostgresql`: The single instance of the DAO.
         """
-
         if cls._instance is None:
             cls._instance = SummaryDAOMock(log_level)
         return cls._instance

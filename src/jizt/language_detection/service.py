@@ -44,8 +44,7 @@ def detect_language(text: str) -> DetectedLanguage:
     """
     detected_lang = lang_detector.detect(text)
     logger.debug(
-        f"Language identification: [text] {text[:50]} "
-        f"[prediction] '{detected_lang.language}' "
-        f"[confidence] {detected_lang.confidence}"
+        "Language identification: [text] %s [prediction] '%s' [confidence] %s",
+        text[:50], detected_lang.language, detected_lang.confidence
     )
     return detected_lang

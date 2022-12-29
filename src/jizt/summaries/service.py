@@ -64,14 +64,15 @@ def generate_summary(
         summary, warnings = db.get_summary_by_request_id(request_id)
         count = db.increment_summary_count(request_id)
         logger.debug(
-            f'Summary already exists: [id] {summary.id_}, [source] '
-            f'{summary.source[:50]}, [output] '
-            f'{summary.output[:50] if summary.output is not None else None}, '
-            f'[model] {summary.model}, [params] {summary.params}, [status] '
-            f'{summary.status}, [started_at] {summary.started_at}, [ended_at] '
-            f'{summary.ended_at}, [language] {summary.language}'
+            'Summary already exists: [id] %s, [source] %s, [output] '
+            '%s, [model] %s, [params] %s, [status] %s [started_at] %s, '
+            '[ended_at] %s, [language] %s',
+            summary.id_, summary.source[:50],
+            summary.output[:50] if summary.output is not None else None,
+            summary.model, summary.params, summary.status, summary.started_at,
+            summary.ended_at, summary.language
         )
-        logger.debug(f"Current summary count: {count}.")
+        logger.debug("Current summary count: %s.", count)
     else:
         summary = Summary(
             id_=summary_id,
@@ -88,12 +89,13 @@ def generate_summary(
         warnings = None
         db.insert_initial_request(request_id, summary, cache, warnings)
         logger.debug(
-            f'New summary created: [id] {summary.id_}, [source] '
-            f'{summary.source[:50]}, [output] '
-            f'{summary.output[:50] if summary.output is not None else None}, '
-            f'[model] {summary.model}, [params] {summary.params}, [status] '
-            f'{summary.status}, [started_at] {summary.started_at}, [ended_at] '
-            f'{summary.ended_at}, [language] {summary.language}'
+            'New summary created: [id] %s, [source] %s, [output] '
+            '%s, [model] %s, [params] %s, [status] %s, [started_at] %s, '
+            '[ended_at] %s, [language] %s',
+            summary.id_, summary.source[:50],
+            summary.output[:50] if summary.output is not None else None,
+            summary.model, summary.params, summary.status, summary.started_at,
+            summary.ended_at, summary.language
         )
         background_tasks.add_task(
             summarization_pipeline.run,

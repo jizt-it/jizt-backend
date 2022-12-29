@@ -10,7 +10,7 @@ RUN apt-get update \
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
