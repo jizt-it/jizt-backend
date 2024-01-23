@@ -17,7 +17,7 @@ marshmallow==3.14.1
 nltk==3.8
 numpy==1.24.1
 packaging==22.0
-Pillow==10.0.1
+Pillow==10.2.0
 pluggy==1.0.0
 psycopg[binary]==3.1.7
 py==1.11.0
