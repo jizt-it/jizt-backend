@@ -29,7 +29,7 @@ You can take a look at the `Jizt Roadmap
 moment.
 
 Are you looking for the REST API documentation? You can find it
-`here <https://docs.api.jizt.it>`__.
+`here <https://jizt-it.github.io/jizt-api-spec/>`__.
 
 .. toctree::
    :hidden:

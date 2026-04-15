@@ -1,6 +1,6 @@
 # Welcome to the Jizt docs!
 
-You can find the docs at [docs.jizt.it](https://docs.jizt.it). Besides, you can
+You can find the docs at [docs.jizt.it](https://jizt-it.github.io/jizt-backend/). Besides, you can
 always compile the documentation locally. For that, simply follow the steps below.
 
 ## Prerequisites

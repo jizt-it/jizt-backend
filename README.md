@@ -1,7 +1,7 @@
-<a href="https://www.jizt.it"><p align="center"><img width="450" src="https://github.com/jizt-it/jizt-backend/blob/main/docs/source/_static/images/jizt-logo.png" alt="Jizt"></p></a>
+<a href="https://jizt-it.github.io/jizt-website/"><p align="center"><img width="450" src="https://github.com/jizt-it/jizt-backend/blob/main/docs/source/_static/images/jizt-logo.png" alt="Jizt"></p></a>
 
 <p align="center" display="inline-block">
-  <a href="https://docs.jizt.it">
+  <a href="https://jizt-it.github.io/jizt-backend/">
     <img src="https://github.com/jizt-it/jizt-backend/actions/workflows/build-docs.yml/badge.svg" alt="Build & Publish docs">
   </a>
   <a href="https://deepsource.io/gh/jizt-it/jizt-backend/?ref=repository-badge}" target="_blank">
@@ -21,13 +21,13 @@ Jizt makes use of the latest advances in Natural Language Processing (NLP), usin
 
 📄 Jizt generates abstractive summaries, i.e. summaries containing words or expressions that do not appear in the original text. In addition, it allows you to adjust the parameters of the summary, such as its length or the generation method to be used.
 
-📡 Jizt exposes a REST API anyone can use to generate summaries. The API documentation is accessible via [docs.api.jizt.it](https://docs.api.jizt.it).
+📡 Jizt exposes a REST API anyone can use to generate summaries. The API documentation is accessible via [docs.api.jizt.it](https://jizt-it.github.io/jizt-api-spec/).
 
 ✨ Check out our app! Available at [app.jizt.it](https://app.jizt.it) and through [Google Play](https://play.google.com/store/apps/details?id=it.jizt.app).
 
 ## Docs
 
-You can access the project documentation through [docs.jizt.it](https://docs.jizt.it).
+You can access the project documentation through [docs.jizt.it](https://jizt-it.github.io/jizt-backend/).
 
 ## Contribute
 

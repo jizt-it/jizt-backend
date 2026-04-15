@@ -1,6 +1,6 @@
 function addGithubButton() {
     const button = `
-        <iframe src="https://ghbtns.com/github-btn.html?user=jizt-it&repo=jizt-backend&type=star&count=true" 
+        <iframe src="https://ghbtns.com/github-btn.html?user=jizt-it&repo=jizt-backend&type=star&count=true"
         frameborder="0" scrolling="0" width="150" height="20" title="GitHub" style="width: 30%; margin: 0 auto 5px auto;"></iframe>
     `;
     document.querySelector("#rtd-search-form").insertAdjacentHTML('beforebegin', button);
@@ -36,7 +36,7 @@ function hrefAuthor() {
 }
 
 function onLoad() {
-    addExternalTocEntry("REST API Docs", "https://docs.api.jizt.it");
+    addExternalTocEntry("REST API Docs", "https://jizt-it.github.io/jizt-api-spec/");
     addExternalTocEntry("Donate", "https://paypal.me/jiztit");
     addGithubButton();
     hrefAuthor();

@@ -41,7 +41,7 @@ def root_view():
     <html>
         <body>
             <h1>Jizt API v0.0.1</h1>
-            <p>Visit the docs at: <a href="https://docs.api.jizt.it">docs.api.jizt.it</a>.</p>
+            <p>Visit the docs at: <a href="https://jizt-it.github.io/jizt-api-spec/">docs.api.jizt.it</a>.</p>
         </body>
     </html>
     """

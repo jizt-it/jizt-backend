@@ -17,7 +17,7 @@
 
 """Jizt REST API.
 
-Find the documentation at `https://docs.api.jizt.it`__.
+Find the documentation at `https://jizt-it.github.io/jizt-api-spec/`__.
 """
 
 __version__ = '0.1.2'

@@ -51,7 +51,7 @@ Dispatcher in charge of three tasks:
    implemented in Python with `Flask <https://flask.palletsprojects.com>`__ and the
    extension `Flask-RESTful <https://flask-restful.readthedocs.io>`__. If you want to
    know about its specification, you can refer to `docs.api.jizt.it
-   <https://docs.api.jizt.it>`__.
+   <https://jizt-it.github.io/jizt-api-spec/>`__.
 
 #. It forwards the request to the appropriate microservice. For now, all the requests
    that Ingress forwards to the Dispatcher are as well redirected to the
